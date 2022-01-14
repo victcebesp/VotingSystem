@@ -1,0 +1,17 @@
+dependencies:
+  - "OpenZeppelin/openzeppelin-contracts@4.4.1"
+
+compiler:
+  solc:
+    remappings: "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.4.1"
+
+dotenv: .env
+
+networks:
+  default: polygon-mainnet-fork
+  polygon-mainnet-fork:
+    collection_contract: "0x2953399124f0cbb46d2cbacd8a89cf0599974963"
+    verify: False
+
+wallets:
+  from_key: ${PRIVATE_KEY}

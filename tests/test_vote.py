@@ -109,6 +109,8 @@ def test_collector_can_vote_after_owner_opened_proposal():
     vote_tx.wait(1)
     voted_option = voting_system_contract.getUserAnswerForProposal(0, os.getenv("TOKEN_ID"))
     assert voted_option == expected_voted_option
+    proposal = voting_system_contract.getProposal(0)
+    assert proposal[OPTIONS][expected_voted_option - 1][OPTION_VOTES] == 1
 
 def test_voted_option_cannot_be_zero():
     if (network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS and
@@ -192,11 +194,16 @@ def test_collector_can_vote_multiple_proposals():
     vote_tx.wait(1)
     voted_option = voting_system_contract.getUserAnswerForProposal(0, os.getenv("TOKEN_ID"))
     assert voted_option == expected_voted_option_for_first_proposal
+    proposal = voting_system_contract.getProposal(0)
+    assert proposal[OPTIONS][expected_voted_option_for_first_proposal - 1][OPTION_VOTES] == 1
+
     expected_voted_option_for_second_proposal = 2
     vote_tx = voting_system_contract.vote(1, expected_voted_option_for_second_proposal, os.getenv("TOKEN_ID"), {"from": account})
     vote_tx.wait(1)
     voted_option = voting_system_contract.getUserAnswerForProposal(1, os.getenv("TOKEN_ID"))
     assert voted_option == expected_voted_option_for_second_proposal
+    proposal = voting_system_contract.getProposal(1)
+    assert proposal[OPTIONS][expected_voted_option_for_second_proposal - 1][OPTION_VOTES] == 1
 
 def test_non_collector_cannot_vote():
     if (network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS and
